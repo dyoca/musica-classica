@@ -1,4 +1,8 @@
-const app = require('./src/app');
+require("dotenv").config();
+
+console.log(process.env.JWT_SECRET);
+
+const app = require("./src/app");
 
 const PORT = process.env.PORT || 3000;
 
