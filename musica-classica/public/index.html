@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+  <title>Música Clássica</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="logo">
+      <h1>Música Clássica</h1>
+      <p>
+        Explore compositores e obras clássicas
+      </p>
+
+    </div>
+    <!-- Seção de cadastro de novo usuário -->
+    <div class="card" id="telaCadastro">
+      <h2>Criar Conta</h2>
+      <!-- Campo de entrada para o nome do novo usuário -->
+      <input
+        type="text"
+        id="cadastroNome"
+        placeholder="Seu nome"
+      >
+      <input
+        type="email"
+        id="cadastroEmail"
+        placeholder="Seu email"
+      >
+      <input
+        type="password"
+        id="cadastroSenha"
+        placeholder="Sua senha"
+      >
+      <button onclick="cadastrar()">
+        Cadastrar
+      </button>
+      <p class="link" onclick="mostrarLogin()">
+        Já tenho conta
+      </p>
+    </div>
+    <!-- Seção de login para usuários existentes -->
+    <div
+      class="card hidden"
+      id="telaLogin"
+    >
+      <h2>Login</h2>
+      <input
+        type="email"
+        id="loginEmail"
+        placeholder="Seu email"
+      >
+      <input
+        type="password"
+        id="loginSenha"
+        placeholder="Sua senha"
+      >
+      <button onclick="login()">
+        Entrar
+      </button>
+      <!-- Link para alternar para tela de cadastro -->
+      <p class="link" onclick="mostrarCadastro()">
+        Criar conta
+      </p>
+    </div>
+    <!-- Seção do painel principal exibida após login -->
+    <div
+      class="card hidden"
+      id="painel"
+    >
+      <h2>Compositores</h2>
+      <input
+        type="text"
+        id="nome"
+        placeholder="Nome"
+      >
+      <input
+        type="text"
+        id="pais"
+        placeholder="País"
+      >
+      <input
+        type="text"
+        id="periodo"
+        placeholder="Período"
+      >
+      <button onclick="cadastrarCompositor()">
+        Cadastrar compositor
+      </button>
+      <button onclick="listarCompositores()">
+        Atualizar lista
+      </button>
+      <ul id="listaCompositores"></ul>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

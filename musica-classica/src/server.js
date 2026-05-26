@@ -1,12 +1,11 @@
+// Carrega as variáveis de ambiente do arquivo .env
 require("dotenv").config();
-
-console.log("JWT:");
-console.log(process.env.JWT_SECRET);
-
+// Importa a aplicação Express configurada do arquivo app.js
 const app = require("./app");
-
-const PORT = process.env.PORT || 3000;
-
+// Define a porta em que o servidor rodará
+const PORT = 3000;
+// Inicia o servidor e coloca-o em escuta na porta especificada
 app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
+  // Exibe a URL para acessar o servidor no console
+  console.log(`http://localhost:${PORT}`);
 });
