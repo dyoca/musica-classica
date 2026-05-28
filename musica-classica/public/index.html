@@ -43,6 +43,12 @@
         Já tenho conta
       </p>
     </div>
+    <div id="audioPlayer" class="hidden">
+  <div id="audioTitulo"></div>
+  <div id="audioInfo"></div>
+
+  <audio id="player" controls></audio>
+</div>
     <!-- Seção de login para usuários existentes -->
     <div
       class="card hidden"
@@ -101,12 +107,10 @@
   <h2>Pesquisar Compositores e Obras</h2>
 
   <input
-    type="text"
-    id="buscaGlobal"
-    placeholder="Digite nome de compositor ou obra..."
-    oninput="buscarSugestoes()"
-  />
-
+  id="buscaGlobal"
+  oninput="iniciarBuscaLive()"
+  placeholder="Digite nome do compositor ou obra..."
+/>
   <ul id="listaSugestoes"></ul>
 
 
