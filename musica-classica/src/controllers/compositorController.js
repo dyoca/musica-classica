@@ -31,25 +31,17 @@ async function criar(req, res) {
 
 async function listar(req, res) {
   try {
-    const { nome } = req.query;
-
-    const where = {};
-
-    if (nome) {
-      where.nome = {
-        [Op.like]: `%${nome}%`
-      };
-    }
-
     const compositores =
       await Compositor.findAll({
-        where
+        where: {
+          periodo: {
+            [Op.not]: null
+          }
+        }
       });
 
     res.json(compositores);
   } catch (error) {
-    console.error(error);
-
     res.status(500).json({
       erro: "Erro ao listar compositores"
     });
