@@ -12,7 +12,9 @@ const obraValidation = [
     .withMessage("Ano inválido"),
   body("compositorId")
     .notEmpty()
-    .withMessage("Compositor obrigatório"),
+    .withMessage("Compositor obrigatório")
+    .isInt()
+    .withMessage("Compositor inválido"),
 ];
 // Exporta as validações para ser usadas nas rotas
 module.exports = obraValidation;

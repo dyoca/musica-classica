@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Obras - Música Clássica</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="logo">
+        <h1>Música Clássica</h1>
+        <p>Lista de Obras</p>
+        <a href="index.html" class="btn-voltar">← Voltar ao início</a>
+      </div>
+
+      <div class="card">
+        <div class="header-obras">
+          <h2>Obras Cadastradas</h2>
+          <div class="filtro-row">
+            <input
+              type="text"
+              id="filtroObras"
+              placeholder="Filtrar obras..."
+              oninput="filtrarObras()"
+            />
+          </div>
+        </div>
+        <ul id="listaObras"></ul>
+      </div>
+    </div>
+    <script src="script.js"></script>
+    <script>
+      // Carregar obras ao abrir a página
+      document.addEventListener("DOMContentLoaded", () => {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          alert("Você precisa estar logado para ver as obras.");
+          window.location.href = "index.html";
+          return;
+        }
+        carregarObrasPagina();
+      });
+
+      async function carregarObrasPagina() {
+        const token = localStorage.getItem("token");
+        try {
+          const response = await fetch(`${API}/obras`, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          const obras = await response.json();
+          renderizarObras(obras);
+        } catch (error) {
+          console.error(error);
+          document.getElementById("listaObras").innerHTML =
+            '<li class="erro">Erro ao carregar obras.</li>';
+        }
+      }
+
+      function renderizarObras(obras) {
+        const lista = document.getElementById("listaObras");
+
+        if (!obras || obras.length === 0) {
+          lista.innerHTML =
+            '<li class="msg-vazio">Nenhuma obra cadastrada.</li>';
+          return;
+        }
+
+        lista.innerHTML = "";
+        obras.forEach((obra) => {
+          const item = document.createElement("li");
+          item.className = "obra-item";
+          item.innerHTML = `
+          <div class="obra-info">
+            <strong class="obra-titulo">${obra.titulo}</strong>
+            <span class="obra-autor">${obra.compositorNome || "Compositor não informado"}</span>
+            <span class="obra-ano">${obra.ano || "Ano não informado"}</span>
+          </div>
+          <div class="obra-player">
+            <button type="button" class="btn-ouvir" onclick="ouvirObraInline(this, '${obra.titulo}', '${obra.compositorNome || ""}', '${obra.previewUrl || ""}')">
+              Ouvir obra
+            </button>
+            <div class="player-inline hidden">
+              <audio controls class="audio-inline"></audio>
+              <span class="audio-status"></span>
+            </div>
+          </div>
+        `;
+          lista.appendChild(item);
+        });
+      }
+
+      function filtrarObras() {
+        const termo = document
+          .getElementById("filtroObras")
+          .value.toLowerCase();
+        const items = document.querySelectorAll(".obra-item");
+
+        items.forEach((item) => {
+          const titulo = item
+            .querySelector(".obra-titulo")
+            .textContent.toLowerCase();
+          const autor = item
+            .querySelector(".obra-autor")
+            .textContent.toLowerCase();
+
+          if (titulo.includes(termo) || autor.includes(termo)) {
+            item.style.display = "";
+          } else {
+            item.style.display = "none";
+          }
+        });
+      }
+
+      async function ouvirObraInline(
+        botao,
+        titulo,
+        compositorNome,
+        previewUrl,
+      ) {
+        const playerDiv = botao.parentElement.querySelector(".player-inline");
+        const audio = playerDiv.querySelector(".audio-inline");
+        const status = playerDiv.querySelector(".audio-status");
+
+        // Se já está mostrando, esconde
+        if (!playerDiv.classList.contains("hidden")) {
+          playerDiv.classList.add("hidden");
+          audio.pause();
+          return;
+        }
+
+        // Pausa qualquer outro player que esteja tocando
+        document.querySelectorAll(".audio-inline").forEach((a) => {
+          if (a !== audio) {
+            a.pause();
+            a.closest(".player-inline").classList.add("hidden");
+          }
+        });
+
+        // Se tem previewUrl, usa direto
+        if (previewUrl && previewUrl !== "null" && previewUrl !== "") {
+          audio.src = previewUrl;
+          status.textContent = "Preview disponível";
+          status.className = "audio-status success";
+        } else {
+          // Busca áudio da API
+          try {
+            status.textContent = "Carregando...";
+            status.className = "audio-status loading";
+            const response = await fetch(
+              `${API}/obras/audio?query=${encodeURIComponent(titulo + " " + compositorNome)}`,
+            );
+            const previews = await response.json();
+
+            if (!response.ok || !previews.length) {
+              status.textContent = "Áudio não disponível";
+              status.className = "audio-status error";
+              return;
+            }
+
+            audio.src = previews[0].previewUrl;
+            status.textContent = previews[0].trackName;
+            status.className = "audio-status success";
+          } catch (error) {
+            status.textContent = "Erro ao carregar";
+            status.className = "audio-status error";
+            return;
+          }
+        }
+
+        playerDiv.classList.remove("hidden");
+        audio.load();
+        try {
+          await audio.play();
+        } catch (e) {
+          console.log("Reprodução automática bloqueada");
+        }
+      }
+    </script>
+  </body>
+</html>

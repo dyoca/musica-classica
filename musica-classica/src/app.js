@@ -10,6 +10,8 @@ const authRoutes = require("./routes/authRoutes");
 const compositorRoutes = require("./routes/compositorRoutes");
 // Importa as rotas de obras
 const obraRoutes = require("./routes/obraRoutes");
+// Importa as rotas de busca global
+const searchRoutes = require("./routes/searchRoutes");
 // Importa as rotas de CEP
 const cepRoutes = require("./routes/cepRoutes");
 // Importa a conexão com o banco de dados (Sequelize)
@@ -38,10 +40,24 @@ app.use("/auth", authRoutes);
 app.use("/compositores", compositorRoutes);
 // Define as rotas de obras com prefixo /obras
 app.use("/obras", obraRoutes);
+// Define rota de busca global unificada
+app.use("/search", searchRoutes);
 // Define as rotas de CEP com prefixo /cep
 app.use("/cep", cepRoutes);
 // Sincroniza os modelos Sequelize com o banco de dados
-sequelize.sync();
+sequelize
+  .sync()
+  .then(() => {
+    console.log(
+      "Banco sincronizado com sucesso"
+    );
+  })
+  .catch((error) => {
+    console.error(
+      "Erro ao sincronizar banco:",
+      error
+    );
+  });
 // Aplica o middleware de tratamento de erros (deve ser o último)
 app.use(errorMiddleware);
 // Configura a rota para servir a documentação Swagger UI na URL /docs

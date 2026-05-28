@@ -10,6 +10,11 @@ const Obra = sequelize.define("Obra", {
   },
   ano: {
     type: DataTypes.INTEGER
+  },
+  compositorId: {
+    type: DataTypes.INTEGER,
+    allowNull: false
   }
 });
+// Exporta o modelo para ser usado em outros arquivos, como controllers e rotas
 module.exports = Obra;

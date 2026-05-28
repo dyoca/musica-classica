@@ -10,6 +10,7 @@ const compositorValidation = require("../validations/compositorValidation");
 const {
   criar,
   listar,
+  search,
   editar,
   deletar
 } = require("../controllers/compositorController");
@@ -23,6 +24,8 @@ router.post(
 );
 // Define a rota GET / para listar todos os compositores
 router.get("/", listar);
+// Define a rota GET /search para buscar compositores por texto
+router.get("/search", search);
 // Define a rota PUT /:id para editar um compositor específico
 // Aplica validação e middleware de validação antes de executar a função editar
 router.put(

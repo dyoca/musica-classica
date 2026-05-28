@@ -12,11 +12,20 @@ const obraValidation = require("../validations/obraValidation");
 const {
   criar,
   listar,
+  search,
   editar,
-  deletar
+  deletar,
+  buscarPorCompositor,
+  buscarAudio
 } = require("../controllers/obraController");
 // Define a rota GET / para listar todas as obras (sem autenticação)
 router.get("/", listar);
+// Define a rota GET /search para buscar obras por texto
+router.get("/search", search);
+// Define a rota GET /compositor para buscar obras por nome de compositor
+router.get("/compositor", buscarPorCompositor);
+// Define a rota GET /audio para buscar prévias de áudio via API externa
+router.get("/audio", buscarAudio);
 // Define a rota POST / para criar uma nova obra
 // Requer autenticação, validação de dados e middleware de validação
 router.post(
