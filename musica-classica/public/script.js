@@ -123,14 +123,45 @@ async function login() {
       .classList.remove("hidden");
     // Carrega a lista de compositores e obras do servidor
     listarCompositores();
-    listarObras();
   } catch (error) {
     // Se houver um erro de rede, exibe uma mensagem
     alert("Erro no login");
   }
 }
 // Função para cadastrar um novo compositor
-async function cadastrarCompositor() {
+  async function cadastrarCompositor() {
+    const compositoresClassicos = [
+    "bach",
+    "mozart",
+    "beethoven",
+    "vivaldi",
+    "chopin",
+    "liszt",
+    "handel",
+    "schubert",
+    "haydn",
+    "tchaikovsky",
+    "debussy",
+    "ravel",
+    "brahms",
+    "paganini",
+    "rossini",
+    "verdi",
+    "mahler",
+    "wagner",
+    "stravinsky"
+  ];
+
+  if (
+    !compositoresClassicos.some(nomeClassico =>
+      nome.toLowerCase().includes(nomeClassico)
+    )
+  ) {
+    alert(
+      "Cadastre apenas compositores de música clássica."
+    );
+    return;
+  }
   const nome =
     document.getElementById("nome").value.trim();
   const pais =

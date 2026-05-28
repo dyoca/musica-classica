@@ -16,8 +16,6 @@
       <p>
         Explore compositores e obras clássicas
       </p>
-
-      <p>Explore compositores e obras clássicas</p>
     </div>
     <!-- Seção de cadastro de novo usuário -->
     <div class="card" id="telaCadastro">
@@ -97,6 +95,49 @@
         Atualizar lista
       </button>
       <ul id="listaCompositores"></ul>
+
+  <hr style="margin:20px 0;">
+
+  <h2>Pesquisar Compositores e Obras</h2>
+
+  <input
+    type="text"
+    id="buscaGlobal"
+    placeholder="Digite nome de compositor ou obra..."
+    oninput="buscarSugestoes()"
+  />
+
+  <ul id="listaSugestoes"></ul>
+
+  <div id="audioPlayer" class="card hidden">
+    <h3 id="audioTitulo">Nenhuma obra selecionada</h3>
+
+    <p id="audioInfo"></p>
+
+    <audio
+      id="player"
+      controls
+      style="width:100%;margin-top:10px;"
+    ></audio>
+
+    <br><br>
+
+    <a
+      id="audioUrl"
+      class="hidden"
+      target="_blank"
+    >
+      Abrir áudio
+    </a>
+  </div>
+
+  <hr style="margin:20px 0;">
+
+  <button
+    onclick="window.location.href='obras.html'"
+  >
+    Ver todas as obras
+  </button>
     </div>
   </div>
   <script src="script.js"></script>

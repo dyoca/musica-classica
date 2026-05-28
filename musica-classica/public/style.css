@@ -134,3 +134,27 @@ li {
     width: 100%;
   }
 }
+
+.obra-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.obra-player {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.player-inline.hidden {
+  display: none;
+}
+
+.player-inline {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
