@@ -245,26 +245,40 @@ async function abrirCompositor(id, nome) {
   document.getElementById("nomeCompositor").innerText = nome;
   mostrar("paginaCompositor");
 
-  const res = await fetch(`${API}/compositores/${id}/obras`);
-  const obras = await res.json();
   const lista = document.getElementById("listaObras");
-  lista.innerHTML = "";
+  lista.innerHTML = "<li>Carregando obras...</li>";
 
-  if (!obras.length) {
-    lista.innerHTML = "<li>Nenhuma obra cadastrada para este compositor.</li>";
-    return;
+  try {
+    const res = await fetch(`${API}/search?query=${encodeURIComponent(nome)}`);
+    const data = await res.json();
+
+    lista.innerHTML = "";
+    const obras = Array.isArray(data.obras) ? data.obras : [];
+
+    if (!obras.length) {
+      lista.innerHTML = "<li>Nenhuma obra encontrada para este compositor.</li>";
+      return;
+    }
+
+    obras.forEach(o => {
+      const li = document.createElement("li");
+      const button = document.createElement("button");
+      button.textContent = "▶ Ouvir";
+      button.addEventListener("click", () => tocar(o.titulo, nome, o.previewUrl));
+
+      const label = o.classico ? " — Clássico" : "";
+      li.innerHTML = `
+        <b>${o.titulo}</b>${label} ${o.ano ? `— ${o.ano}` : ""}
+        <br>
+        <small>${o.collectionName || nome}</small>
+      `;
+      li.appendChild(button);
+      lista.appendChild(li);
+    });
+  } catch (err) {
+    console.error(err);
+    lista.innerHTML = "<li>Erro ao carregar obras.</li>";
   }
-
-  obras.forEach(o => {
-    const li = document.createElement("li");
-    const button = document.createElement("button");
-    button.textContent = "▶";
-    button.addEventListener("click", () => tocar(o.titulo, nome));
-
-    li.innerHTML = `<b>${o.titulo}</b>`;
-    li.appendChild(button);
-    lista.appendChild(li);
-  });
 }
 
 function iniciarBuscaLive() {
