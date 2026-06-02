@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
   <meta charset="UTF-8">
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Música Clássica</title>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
   <div class="container">
     <div class="logo">
@@ -21,21 +21,9 @@
     <div class="card" id="telaCadastro">
       <h2>Criar Conta</h2>
       <!-- Campo de entrada para o nome do novo usuário -->
-      <input
-        type="text"
-        id="cadastroNome"
-        placeholder="Seu nome"
-      >
-      <input
-        type="email"
-        id="cadastroEmail"
-        placeholder="Seu email"
-      >
-      <input
-        type="password"
-        id="cadastroSenha"
-        placeholder="Sua senha"
-      >
+      <input type="text" id="cadastroNome" placeholder="Seu nome">
+      <input type="email" id="cadastroEmail" placeholder="Seu email">
+      <input type="password" id="cadastroSenha" placeholder="Sua senha">
       <button onclick="cadastrar()">
         Cadastrar
       </button>
@@ -43,28 +31,16 @@
         Já tenho conta
       </p>
     </div>
-    <div id="audioPlayer" class="hidden">
-  <div id="audioTitulo"></div>
-  <div id="audioInfo"></div>
-
-  <audio id="player" controls></audio>
-</div>
+    <div id="audioPlayer" class="hidden card">
+      <div id="audioTitulo"></div>
+      <div id="audioInfo"></div>
+      <audio id="player" controls></audio>
+    </div>
     <!-- Seção de login para usuários existentes -->
-    <div
-      class="card hidden"
-      id="telaLogin"
-    >
+    <div class="card hidden" id="telaLogin">
       <h2>Login</h2>
-      <input
-        type="email"
-        id="loginEmail"
-        placeholder="Seu email"
-      >
-      <input
-        type="password"
-        id="loginSenha"
-        placeholder="Sua senha"
-      >
+      <input type="email" id="loginEmail" placeholder="Seu email">
+      <input type="password" id="loginSenha" placeholder="Sua senha">
       <button onclick="login()">
         Entrar
       </button>
@@ -74,55 +50,44 @@
       </p>
     </div>
     <!-- Seção do painel principal exibida após login -->
-    <div
-      class="card hidden"
-      id="painel"
-    >
-      <h2>Compositores</h2>
-      <input
-        type="text"
-        id="nome"
-        placeholder="Nome"
-      >
-      <input
-        type="text"
-        id="pais"
-        placeholder="País"
-      >
-      <input
-        type="text"
-        id="periodo"
-        placeholder="Período"
-      >
-      <button onclick="cadastrarCompositor()">
-        Cadastrar compositor
-      </button>
-      <button onclick="listarCompositores()">
-        Atualizar lista
-      </button>
-      <ul id="listaCompositores"></ul>
+    <div class="card hidden" id="painel">
+      <div class="painel-grid">
+        <div class="painel-section">
+          <h2>Compositores</h2>
+          <input type="text" id="nome" placeholder="Nome">
+          <input type="text" id="pais" placeholder="País">
+          <input type="text" id="periodo" placeholder="Período">
+          <button onclick="cadastrarCompositor()">Cadastrar compositor</button>
+          <button onclick="listarCompositores()">Atualizar lista</button>
+          <ul id="listaCompositores"></ul>
+        </div>
+        <div class="painel-section">
+          <h2>Obras</h2>
+          <input type="text" id="obraTitulo" placeholder="Título da obra">
+          <input type="number" id="obraAno" placeholder="Ano">
+          <select id="compositorSelect">
+            <option value="">Escolha um compositor</option>
+          </select>
+          <button onclick="cadastrarObra()">Cadastrar obra</button>
+          <button onclick="listarObras()">Atualizar obras</button>
+          <ul id="listaObrasPanel"></ul>
+        </div>
+      </div>
 
-  <hr style="margin:20px 0;">
-
-  <h2>Pesquisar Compositores e Obras</h2>
-
-  <input
-  id="buscaGlobal"
-  oninput="iniciarBuscaLive()"
-  placeholder="Digite nome do compositor ou obra..."
-/>
-  <ul id="listaSugestoes"></ul>
-
-
-  <hr style="margin:20px 0;">
-
-  <button
-    onclick="window.location.href='obras.html'"
-  >
-    Ver todas as obras
-  </button>
+      <hr style="margin:20px 0;">
+      <h2>Pesquisar Compositores e Obras</h2>
+      <input id="buscaGlobal" oninput="iniciarBuscaLive()" placeholder="Digite nome do compositor ou obra...">
+      <ul id="listaSugestoes"></ul>
+      <hr style="margin:20px 0;">
+      <button onclick="window.location.href='obras.html'">Ver todas as obras</button>
+    </div>
+    <div class="card hidden" id="paginaCompositor">
+      <button class="btn-voltar" onclick="voltarParaPainel()">⬅ Voltar</button>
+      <h2 id="nomeCompositor"></h2>
+      <ul id="listaObras"></ul>
     </div>
   </div>
   <script src="script.js"></script>
 </body>
+
 </html>

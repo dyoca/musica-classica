@@ -63,9 +63,10 @@ async function login(req, res) {
       });
     }
 
+    const jwtSecret = process.env.JWT_SECRET || "musica-classica-secret";
     const token = jwt.sign(
       { id: usuario.id },
-      process.env.JWT_SECRET,
+      jwtSecret,
       { expiresIn: "1d" }
     );
 

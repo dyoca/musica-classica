@@ -2,6 +2,9 @@
 const { DataTypes } = require("sequelize");
 // Importa a instância do Sequelize conectada ao banco de dados
 const sequelize = require("../database/connection");
+// Importa o modelo Compositor para criar a associação entre obras e compositores
+const Compositor = require("./Compositor");
+
 // Define o modelo Obra com as colunas e suas propriedades
 const Obra = sequelize.define("Obra", {
   titulo: {
@@ -16,5 +19,10 @@ const Obra = sequelize.define("Obra", {
     allowNull: false
   }
 });
+
+// Associações para que o Sequelize saiba como incluir compositores nas consultas
+Obra.belongsTo(Compositor, { foreignKey: "compositorId" });
+Compositor.hasMany(Obra, { foreignKey: "compositorId" });
+
 // Exporta o modelo para ser usado em outros arquivos, como controllers e rotas
 module.exports = Obra;

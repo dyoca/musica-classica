@@ -13,10 +13,11 @@ function authMiddleware(req, res, next) {
   }
   // Extrai o token do header
   const token = authHeader.split(" ")[1];
+  const jwtSecret = process.env.JWT_SECRET || "musica-classica-secret";
   // Inicia um bloco try para validar o token
   try {
     // Verifica se o token é válido usando a chave secreta JWT
-    jwt.verify(token, process.env.JWT_SECRET);
+    jwt.verify(token, jwtSecret);
     // Se o token for válido, passa o controle para a próxima função
     next();
   } catch {

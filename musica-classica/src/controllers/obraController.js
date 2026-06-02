@@ -7,6 +7,36 @@ const axios = require("axios");
 // Importa operadores do Sequelize para buscas parciais
 const { Op } = require("sequelize");
 
+const classicalKeywords = [
+  "classical",
+  "clássico",
+  "bach",
+  "mozart",
+  "beethoven",
+  "vivaldi",
+  "chopin",
+  "handel",
+  "haydn",
+  "schubert",
+  "debussy",
+  "brahms",
+  "tchaikovsky",
+  "strauss"
+];
+
+function isClassicalText(text) {
+  if (!text) return false;
+  const normalized = text.toLowerCase();
+  return classicalKeywords.some((keyword) =>
+    normalized.includes(keyword)
+  );
+}
+
+function isClassicalGenre(genre) {
+  if (!genre) return false;
+  return genre.toLowerCase().includes("class");
+}
+
 // Função para criar uma nova obra
 async function criar(req, res) {
   // Cria uma nova obra
@@ -18,7 +48,7 @@ async function criar(req, res) {
 async function listar(req, res) {
   // Busca todas as obras no banco de dados
   const obras = await Obra.findAll({
-  include: Compositor
+    include: Compositor
   });
   const compositorIds = obras.map((obra) => obra.compositorId);
   const compositores = await Compositor.findAll({
@@ -138,7 +168,7 @@ async function buscarGlobal(req, res) {
     const response = await axios.get(
       `https://itunes.apple.com/search?term=${encodeURIComponent(
         query
-      )}&media=music&limit=30`
+      )}&media=music&entity=song&limit=40`
     );
 
     const results = Array.isArray(response.data.results)
@@ -153,7 +183,10 @@ async function buscarGlobal(req, res) {
           {
             nome: item.artistName,
             genero: item.primaryGenreName || "Não informado",
-            pais: item.country || "Não informado"
+            pais: item.country || "Não informado",
+            classico:
+              isClassicalGenre(item.primaryGenreName) ||
+              isClassicalText(item.artistName)
           }
         ])
     )].map(([, compositor]) => compositor);
@@ -164,7 +197,12 @@ async function buscarGlobal(req, res) {
       ano: item.releaseDate ? item.releaseDate.slice(0, 4) : "Não informado",
       previewUrl: item.previewUrl || null,
       collectionName: item.collectionName || "",
-      trackViewUrl: item.trackViewUrl || ""
+      trackViewUrl: item.trackViewUrl || "",
+      genre: item.primaryGenreName || "Não informado",
+      classico:
+        isClassicalGenre(item.primaryGenreName) ||
+        isClassicalText(item.artistName) ||
+        isClassicalText(item.trackName)
     }));
 
     res.json({ compositores, obras });
@@ -185,7 +223,7 @@ async function buscarAudio(req, res) {
     const response = await axios.get(
       `https://itunes.apple.com/search?term=${encodeURIComponent(
         query
-      )}&media=music&limit=5`
+      )}&media=music&entity=song&limit=10`
     );
 
     const previews = (response.data.results || [])
